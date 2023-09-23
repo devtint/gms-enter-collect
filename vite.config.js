@@ -38,7 +38,6 @@ import transformerDirective from '@unocss/transformer-directives'
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
   const viteEnv = loadEnv(mode, './')
-
   return {
     base: viteEnv.VITE_BASE,
     server: {
@@ -59,7 +58,7 @@ export default defineConfig(({ mode }) => {
       // }
     },
     build: {
-      outDir: 'dist',
+      outDir: 'enter-collect2',
       assetsDir: 'static/assets',
       // sourcemap: true,
       // 规定触发警告的 chunk 大小，消除打包大小超过500kb警告

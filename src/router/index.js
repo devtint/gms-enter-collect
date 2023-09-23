@@ -21,7 +21,7 @@ const router = createRouter({
           path: '/',
           name: 'HomePage',
           meta: {
-            title: 'TOOLSDOG'
+            title: 'Enter Collects'
           },
           component: () => import('@/views/HomePage.vue')
         },

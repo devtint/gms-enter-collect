@@ -21,14 +21,14 @@ export default {
 
               <!-- 默认插槽和center插槽，默认插槽可不加template直接写内容，作用同center插槽 -->
               <template #center>
-                <Menu />
+                <!-- <Menu /> -->
               </template>
 
               <!-- right插槽 -->
               <template #right>
                 <SwitchMode />
-                <SwitchLayout />
-                <Github />
+                <!-- <SwitchLayout /> -->
+                <Refresh />
               </template>
             </Navbar>
           </a-layout-header>
@@ -40,9 +40,9 @@ export default {
             </transition>
           </router-view>
         </a-layout-content>
-        <a-layout-footer>
+        <!-- <a-layout-footer>
           <Footer />
-        </a-layout-footer>
+        </a-layout-footer> -->
       </a-layout>
     </div>
   </div>
