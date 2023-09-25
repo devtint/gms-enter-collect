@@ -18,7 +18,7 @@
         <div class="menuLists">
           <div class="input" v-for="(_, index) in menuList" :key="index">
             <button
-              :class="({ menuActive: index == 0 }, 'value')"
+              class="value"
               @click="onClickMenuItem(_.id)"
               ref="menuReference"
             >
@@ -49,20 +49,17 @@
               <a-spin :size="40" :loading="insLoading" tip="Loading...">
                 <div class="card-grid-style" v-if="instanceList.length > 0">
                   <div class="card-layout" id="basic-demo">
-                    <div
-                      class="card-bg1 cursor-pointer rounded-2xl shadow-sm shadow-sky-500 outline outline-slate-400 -outline-offset-8 m-5"
-                      v-for="(_, index) in instanceList"
-                      :key="index"
-                      @click="handleClick(_.key, _.url)"
-                    >
+                    <div class="parent">
                       <div
-                        class="card-bg2 group overflow-hidden relative after:duration-500 before:duration-500 duration-500 hover:after:duration-500 hover:after:translate-x-24 hover:before:translate-y-12 hover:before:-translate-x-32 hover:duration-500 after:absolute after:w-24 after:h-24 after:bg-sky-700 after:rounded-full after:blur-xl after:bottom-32 after:right-16 after:w-12 after:h-12 before:absolute before:w-20 before:h-20 before:bg-sky-400 before:rounded-full before:blur-xl before:top-20 before:right-16 before:w-12 before:h-12 hover:rotate-6 flex justify-center items-center h-38 w-66 rounded-2xl outline outline-slate-400 -outline-offset-8"
+                        class="card"
+                        v-for="(_, index) in instanceList"
+                        :key="index"
+                        @click="handleClick(_.key, _.url)"
                       >
-                        <div class="z-10 flex flex-col items-center gap-2 p-10">
-                          <span class="text-gray-100 text-xl font-bold w-full"
-                            >{{ _.name }}
-                          </span>
-                          <p class="text-gray-300 font-600">{{ _.key }}</p>
+                        <div class="content-box">
+                          <span class="card-title">{{ _.name }}</span>
+                          <p class="card-content">{{ _.key }}</p>
+                          <!-- <span class="see-more">New Tab Open</span> -->
                         </div>
                       </div>
                     </div>
@@ -277,17 +274,6 @@ const handleClick = (key, url) => {
   display: flex;
   flex-wrap: wrap;
   align-items: start;
-  .card-bg1 {
-    background: rgb(var(--arcoblue-3));
-  }
-  .card-bg2 {
-    background: rgb(var(--arcoblue-5));
-  }
-}
-.menuActive {
-  background-color: rgb(var(--arcoblue-6));
-  color: var(--color-neutral-1);
-  outline: none;
 }
 .menuLists {
   .input {
@@ -317,13 +303,13 @@ const handleClick = (key, url) => {
 
   .value:not(:active):hover,
   .value:focus {
-    background-color: rgb(var(--arcoblue-3));
-    color: var(--color-neutral-1);
+    background-color: rgb(var(--arcoblue-5));
+    color: var(--color-neutral-8);
   }
 
   .value:focus,
   .value:active {
-    background-color: rgb(var(--arcoblue-5));
+    background-color: rgb(var(--arcoblue-6));
     color: var(--color-neutral-1);
     outline: none;
   }
