@@ -301,7 +301,7 @@ const handleClick = (name, url) => {
   transform: translateY(-8px);
 }
 .card-grid-style {
-  min-height: calc(100vh - 64px -60px);
+  // min-height: calc(100vh - 64px - 60px);
 }
 .emply-box {
   height: calc(100vh - 64px - 60px);
