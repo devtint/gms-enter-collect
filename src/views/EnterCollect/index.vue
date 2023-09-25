@@ -18,7 +18,7 @@
         <div class="menuLists">
           <div class="input" v-for="(_, index) in menuList" :key="index">
             <button
-              :class="({ menuActive: index == 0 }, 'value')"
+              class="value"
               @click="onClickMenuItem(_.id)"
               ref="menuReference"
             >
@@ -53,7 +53,7 @@
                       class="card-bg1 cursor-pointer rounded-2xl shadow-sm shadow-sky-500 outline outline-slate-400 -outline-offset-8 m-5"
                       v-for="(_, index) in instanceList"
                       :key="index"
-                      @click="handleClick(_.key, _.url)"
+                      @click="handleClick(_.name, _.url)"
                     >
                       <div
                         class="card-bg2 group overflow-hidden relative after:duration-500 before:duration-500 duration-500 hover:after:duration-500 hover:after:translate-x-24 hover:before:translate-y-12 hover:before:-translate-x-32 hover:duration-500 after:absolute after:w-24 after:h-24 after:bg-sky-700 after:rounded-full after:blur-xl after:bottom-32 after:right-16 after:w-12 after:h-12 before:absolute before:w-20 before:h-20 before:bg-sky-400 before:rounded-full before:blur-xl before:top-20 before:right-16 before:w-12 before:h-12 hover:rotate-6 flex justify-center items-center h-38 w-66 rounded-2xl outline outline-slate-400 -outline-offset-8"
@@ -92,6 +92,7 @@
 import service from '@/api/request'
 import { Notification } from '@arco-design/web-vue'
 import { useLoadConfig } from '@/hooks/useLoadConfig'
+import { Modal } from '@arco-design/web-vue'
 import {
   IconCaretRight,
   IconCaretLeft,
@@ -104,8 +105,9 @@ import {
 // let title: string = import.meta.env.VITE_APP_TITLE
 let currentModel = ref('产品型号')
 let menuWidth = ref(300)
+let clickMenuName = ref('')
+const menuReference = ref(null)
 let filterText = ref('')
-
 // 加载配置方法
 useLoadConfig()
 
@@ -146,9 +148,11 @@ const switchModelList = (origin, isFrist) => {
     queryDataSet(true, menuList.value[0].key)
     currentModel.value = menuList.value[0].key
   }
-  return menuList.value
+  // return menuList.value
 }
 const switchInsList = origin => {
+  changeMenuChecked()
+
   instanceList.value = []
   origin.forEach((item, index) => {
     instanceList.value.push({
@@ -163,9 +167,22 @@ const switchInsList = origin => {
     insLoading.value = false
   }, 500)
 }
+const changeMenuChecked = () => {
+  let refsList = menuReference.value
+  console.log('refsList', refsList)
+  if (clickMenuName.value) {
+    refsList.forEach(item => {
+      if (item.innerText === clickMenuName.value) {
+        item.classList.add('checked')
+      } else {
+        item.classList.remove('checked')
+      }
+    })
+  } else {
+    refsList[0].classList.add('checked')
+  }
+}
 queryDataSet(false, 'frist')
-const menuReference = ref(null)
-console.log('menuReference', menuReference)
 
 // type MenuItem = {
 //   id: string;
@@ -183,18 +200,38 @@ const onClickMenuItem = key => {
   // 加载动画
   insLoading.value = true
   // 发送请求加载右侧实例
+  clickMenuName.value = name
   queryDataSet(true, name)
 }
 
-const handleClick = (key, url) => {
+const handleClick = (name, url) => {
+  console.log({ name, url })
   if (url) {
     window.open(url)
   } else {
-    // 拼接url
-    const outside = window.getMetaConfig().outside
-    const url = `${outside}?keySvrName=${key}`
-    // 新标签页打开
-    window.open(url)
+    const ModalContent = {
+      setup() {
+        return () =>
+          h('div', { class: 'info-modal-content' }, '未配置', [
+            h(
+              'span',
+              { style: 'color:rgb(var(--red-6));margin: 0 10px' },
+              `【${name}】`
+            ),
+            '的导航地址'
+          ])
+      }
+    }
+    Modal.error({
+      title: '错误提示',
+      content: h(ModalContent)
+    })
+    // // 拼接url
+    // const env = import.meta.env.MODE
+    // const outside = window.getMetaConfig(env).outside
+    // const url = `${outside}?keySvrName=${key}`
+    // // 新标签页打开
+    // window.open(url)
   }
 }
 </script>
@@ -328,6 +365,11 @@ const handleClick = (key, url) => {
     outline: none;
   }
 
+  .checked {
+    background-color: rgb(var(--arcoblue-5));
+    color: var(--color-neutral-1);
+  }
+
   .value::before {
     content: '';
     position: absolute;
@@ -339,11 +381,14 @@ const handleClick = (key, url) => {
     border-radius: 5px;
     opacity: 0;
   }
-
-  .value:focus::before,
-  .value:active::before {
+  .checked::before {
     opacity: 1;
   }
+
+  // .value:focus::before,
+  // .value:active::before {
+  //   opacity: 1;
+  // }
 
   .value svg {
     width: 15px;
