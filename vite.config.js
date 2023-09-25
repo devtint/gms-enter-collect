@@ -58,7 +58,7 @@ export default defineConfig(({ mode }) => {
       // }
     },
     build: {
-      outDir: 'enter-collect2',
+      outDir: 'enter-collect',
       assetsDir: 'static/assets',
       // sourcemap: true,
       // 规定触发警告的 chunk 大小，消除打包大小超过500kb警告
